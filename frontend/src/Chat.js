@@ -14,6 +14,7 @@ class Chat extends Component {
   }
 
   componentDidMount() {
+    this.refs.input.input.focus();
     this.ws.onmessage = evt => {
       const texts = evt.data.split("\n");
       const { messages } = this.state;
