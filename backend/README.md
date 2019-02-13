@@ -16,6 +16,16 @@ go get ./...
 go build .
 ```
 
+## Usage
+
+```bash
+./backend --help
+
+Usage of ./backend:
+  -addr string
+    	http service address (default ":8080")
+```
+
 ## Run
 
 ```bash
