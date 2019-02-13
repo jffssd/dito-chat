@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
 import Login from "./Login";
 import Chat from "./Chat";
 
@@ -55,10 +55,10 @@ const PrivateRoute = ({ component: Component, ...rest }) => (
 
 const App = () => (
   <Router>
-    <div>
+    <Switch>
       <Route path="/login" render={props => <Login {...props} auth={auth} />} />
       <PrivateRoute path="/" component={Chat} />
-    </div>
+    </Switch>
   </Router>
 );
 
