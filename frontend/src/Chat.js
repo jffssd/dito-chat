@@ -3,16 +3,6 @@ import "react-chat-elements/dist/main.css";
 import React, { Component } from "react";
 import { MessageList, Input, Button } from "react-chat-elements";
 
-const UID_KEY = "dito-chat-uid";
-
-const generateId = () =>
-  Math.random()
-    .toString(36)
-    .substring(2, 15) +
-  Math.random()
-    .toString(36)
-    .substring(2, 15);
-
 class Chat extends Component {
   constructor(props) {
     super(props);
@@ -21,7 +11,7 @@ class Chat extends Component {
     };
 
     this.ws = new WebSocket("ws://127.0.0.1:8080/ws");
-    this.userId = this.ensureUserId();
+    this.user = props.auth.user;
   }
 
   componentDidMount() {
@@ -41,8 +31,9 @@ class Chat extends Component {
       this.ws.send(
         JSON.stringify({
           text: value.trim(),
-          uid: this.userId,
-          date: new Date()
+          uid: this.user.id,
+          date: new Date(),
+          title: this.user.name
         })
       );
       this.refs.input.clear();
@@ -52,24 +43,16 @@ class Chat extends Component {
   parseWebsocketFrame(frame) {
     const data = frame.data.split("\n");
     return data.map(json => {
-      const { text, uid, date } = JSON.parse(json);
+      const { text, uid, date, title } = JSON.parse(json);
 
       return {
-        position: uid === this.userId ? "right" : "left",
+        position: uid === this.user.id ? "right" : "left",
         type: "text",
         text,
-        date: new Date(date)
+        date: new Date(date),
+        title
       };
     });
-  }
-
-  ensureUserId() {
-    let uid = localStorage.getItem(UID_KEY);
-    if (!uid) {
-      uid = generateId();
-      localStorage.setItem(UID_KEY, uid);
-    }
-    return uid;
   }
 
   render() {
