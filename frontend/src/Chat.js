@@ -10,12 +10,12 @@ class Chat extends Component {
       messages: []
     };
 
-    this.ws = new WebSocket("ws://127.0.0.1:8080/ws");
+    this.ws = new WebSocket("ws://192.168.1.41:8080/ws");
     this.user = props.auth.user;
   }
 
   componentDidMount() {
-    fetch("http://127.0.0.1:8080/messages")
+    fetch("http://192.168.1.41:8080/messages")
       .then(response => response.json())
       .then(messages => messages.map(message => this.formatMessage(message)))
       .then(messages => messages.reverse())
