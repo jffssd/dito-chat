@@ -15,14 +15,21 @@ class Chat extends Component {
   }
 
   componentDidMount() {
-    this.refs.input.input.focus();
-    this.ws.onmessage = frame => {
-      const { messages } = this.state;
+    fetch("http://127.0.0.1:8080/messages")
+      .then(response => response.json())
+      .then(messages => messages.map(message => this.formatMessage(message)))
+      .then(messages => messages.reverse())
+      .then(messages => this.setState({ messages }))
+      .then(() => {
+        this.refs.input.input.focus();
+        this.ws.onmessage = frame => {
+          const { messages } = this.state;
 
-      const newMessages = this.parseWebsocketFrame(frame);
+          const newMessages = this.parseWebsocketFrame(frame);
 
-      this.setState({ messages: [...messages, ...newMessages] });
-    };
+          this.setState({ messages: [...messages, ...newMessages] });
+        };
+      });
   }
 
   sendMessage() {
@@ -42,17 +49,17 @@ class Chat extends Component {
 
   parseWebsocketFrame(frame) {
     const data = frame.data.split("\n");
-    return data.map(json => {
-      const { text, uid, date, title } = JSON.parse(json);
+    return data.map(json => this.formatMessage(JSON.parse(json)));
+  }
 
-      return {
-        position: uid === this.user.id ? "right" : "left",
-        type: "text",
-        text,
-        date: new Date(date),
-        title
-      };
-    });
+  formatMessage({ text, uid, date, title }) {
+    return {
+      position: uid === this.user.id ? "right" : "left",
+      type: "text",
+      text,
+      date: new Date(date),
+      title
+    };
   }
 
   render() {
@@ -74,7 +81,7 @@ class Chat extends Component {
               color="white"
               backgroundColor="black"
               text="Send"
-              onClick={e => this.sendMessage()}
+              onClick={() => this.sendMessage()}
             />
           }
         />

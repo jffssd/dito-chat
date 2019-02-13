@@ -5,6 +5,7 @@ import (
 	"log"
 	"time"
 
+	"github.com/go-redis/redis"
 	"github.com/gorilla/websocket"
 )
 
@@ -20,6 +21,8 @@ const (
 
 	// Maximum message size allowed from peer.
 	maxMessageSize = 512
+
+	redisKey = "messages"
 )
 
 var (
@@ -30,6 +33,8 @@ var (
 // Client is a middleman between the websocket connection and the hub.
 type Client struct {
 	hub *Hub
+
+	redis *redis.Client
 
 	// The websocket connection.
 	conn *websocket.Conn
@@ -60,7 +65,21 @@ func (c *Client) readPump() {
 			break
 		}
 		message = bytes.TrimSpace(bytes.Replace(message, newline, space, -1))
+		c.writeToRedis(message)
 		c.hub.broadcast <- message
+	}
+}
+
+func (c *Client) writeToRedis(message []byte) {
+	pipe := c.redis.Pipeline()
+
+	pipe.LPush(redisKey, string(message))
+	pipe.LTrim(redisKey, 0, 1000)
+
+	_, err := pipe.Exec()
+
+	if err != nil {
+		log.Printf("error: %v", err)
 	}
 }
 
