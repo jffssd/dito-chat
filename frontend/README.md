@@ -1,5 +1,12 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Environment Variables
+
+You must setup these env vars to correctly build and run the frontend:
+
+- `REACT_APP_BACKEND_WS`: backend websocket endpoint. Ex: ws://localhost:8080
+- `REACT_APP_BACKEND_URL`: backend http endpoint. Ex: http://localhost:8080
+
 ## Available Scripts
 
 In the project directory, you can run:
