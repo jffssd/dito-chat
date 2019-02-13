@@ -23,6 +23,12 @@ const auth = {
     localStorage.setItem(USER_KEY, JSON.stringify(this.user));
   },
 
+  logout() {
+    localStorage.removeItem(USER_KEY);
+    this.user = null;
+    window.location.reload();
+  },
+
   isAuthenticated() {
     if (this.user !== null) return true;
 
