@@ -10,12 +10,12 @@ class Chat extends Component {
       messages: []
     };
 
-    this.ws = new WebSocket("ws://192.168.1.41:8080/ws");
+    this.ws = new WebSocket(`${process.env.REACT_APP_BACKEND_WS}/ws`);
     this.user = props.auth.user;
   }
 
   componentDidMount() {
-    fetch("http://192.168.1.41:8080/messages")
+    fetch(`${process.env.REACT_APP_BACKEND_URL}/messages`)
       .then(response => response.json())
       .then(messages => messages.map(message => this.formatMessage(message)))
       .then(messages => messages.reverse())
@@ -62,14 +62,12 @@ class Chat extends Component {
     };
   }
 
-  logout() {
-    this.props.auth.logout();
-  }
-
   render() {
     return (
       <div>
-        <button className="logout" onClick={() => this.logout()}>Logout</button>
+        <button className="logout" onClick={() => this.props.auth.logout()}>
+          Logout
+        </button>
         <MessageList
           className="message-list"
           lockable={true}
