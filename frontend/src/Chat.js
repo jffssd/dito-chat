@@ -38,9 +38,9 @@ class Chat extends Component {
       this.ws.send(
         JSON.stringify({
           text: value.trim(),
-          uid: this.user.id,
+          uid: this.props.auth.user.id,
           date: new Date(),
-          title: this.user.name
+          title: this.props.auth.user.name
         })
       );
       this.refs.input.clear();
@@ -54,7 +54,7 @@ class Chat extends Component {
 
   formatMessage({ text, uid, date, title }) {
     return {
-      position: uid === this.user.id ? "right" : "left",
+      position: uid === this.props.auth.user.id ? "right" : "left",
       type: "text",
       text,
       date: new Date(date),
@@ -62,9 +62,14 @@ class Chat extends Component {
     };
   }
 
+  logout() {
+    this.props.auth.logout();
+  }
+
   render() {
     return (
       <div>
+        <button className="logout" onClick={() => this.logout()}>Logout</button>
         <MessageList
           className="message-list"
           lockable={true}

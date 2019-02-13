@@ -30,8 +30,14 @@ class Login extends Component {
     }
 
     return (
-      <div>
-        <input type="text" placeholder="Guest" ref="input" />
+      <div className="login">
+        <input
+          autoFocus
+          type="text"
+          placeholder="Guest"
+          ref="input"
+          onKeyPress={({ key }) => key === 'Enter' && this.login()}
+        />
         <button onClick={() => this.login()}>Login</button>
       </div>
     );

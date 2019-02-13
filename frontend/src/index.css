@@ -9,9 +9,59 @@ body {
   margin: 0;
 }
 
+html,
+body,
+#root {
+  height: 100vh;
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
+}
+
+div.login {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+div.login input {
+  padding: 10px;
+  font-size: 20px;
+}
+
+input,
+button {
+  border: none;
+  outline: none;
+}
+
+div.login button {
+  background-color: #e2e2e2;
+  padding: 14px;
+}
+
+button.logout {
+  padding: 10px 20px;
+  position: fixed;
+  top: 10px;
+  left: 45%;
+  z-index: 100;
+  background-color: #9a9a9a;
+  border: #b5b5b5 solid 1px;
+  border-radius: 100px;
+  box-shadow: 1px 1px 3px #c5c5c5;
+  cursor: pointer;
+  color: white;
+  opacity: 0.75;
+}
+
+button.logout:hover {
+  background-color: #b7b7b7;
+  opacity: 1;
 }
 
 div.rce-container-input {
@@ -27,7 +77,11 @@ div.rce-input-buttons {
   margin: 0;
 }
 
-button.rce-button {
+button.rce-button {width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: #c1c1c1 !important;
   color: #444444 !important;
   min-width: 100px;
