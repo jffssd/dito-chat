@@ -16,7 +16,7 @@ Devido a qualidade da plataforma e alto nível de integração entre seus servi�
 
 ## Provisionamento de Infraestrutura
 
-Vamos utilizar o [Terraform](https://www.terraform.io/) e o [CloudFormation](https://aws.amazon.com/pt/cloudformation/) para provisionamento da infraestrutura necessária do ambiente. Os códigos podem ser versionado e reutilizado de diversas maneiras. O CloudFormation será utilizado para suprir demandas mais específicas da infraestrutura da AWS.
+Vamos utilizar o [Terraform](https://www.terraform.io/) para provisionamento da infraestrutura necessária do ambiente. Os códigos podem ser versionado e reutilizado de diversas maneiras.
 
 **Este repositório possui SOMENTE o script para criação do recurso ELASTICACHE para o Redis!**
 
@@ -27,7 +27,7 @@ O código funciona perfeitamente para este caso de uso, e pode ser adataptado fa
 
 __Execução dos scripts do Terraform__
 
-Para execução dos scripts do terraform, é necessário abrir a linah de comando e executar *terraform init* configurar o Provider da AWS. Também é necessário definição de três variáveis de ambiente com as permissões de credenciais do IAM:
+Para execução dos scripts do terraform, é necessário abrir a linha de comando e executar *terraform init* configurar o Provider da AWS. Também é necessário definição de três variáveis de ambiente com as permissões de credenciais do IAM:
 
 - AWS_ACCESS_KEY_ID="sua_access_key"
 - AWS_SECRET_ACCESS_KEY="sua_secret_access_key"
