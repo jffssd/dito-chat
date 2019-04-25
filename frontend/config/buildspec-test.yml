@@ -1,0 +1,16 @@
+version: 0.2
+
+phases:
+  build:
+    commands:
+      - echo Iniciando etapa de testes...
+      - CI=true npm test
+      - echo Fase de testes completa
+  post_build:
+    commands:
+      - echo Redirecionando para próxima etapa
+artifacts:
+    files:
+      - appspec.json
+      - task-definition.json
+      - imagedefinition.json

@@ -1,0 +1,40 @@
+version: 0.2 
+ 
+phases: 
+  pre_build: 
+    commands: 
+      - echo Logging in to Amazon ECR... 
+      - aws --version 
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - ACCOUNT_ID="0123456789"
+      - LAMBDA_API_LATEST_TASK_VERSION="https://execute-api.sa-east-1.amazonaws.com/v1/endpoint" # Substitua pelo endpoint do API Gateway com o Lambda
+      - TASK_DEFINITION_NAME="Dito-Chat-Frontend" 
+      - CONTAINER_NAME="dito-chat-frontend" 
+      - REPOSITORY_IMAGE_NAME="dito-chat-frontend" 
+      - CONTAINER_PORT=3000 
+      - HOST_PORT=3000
+      - CLOUDWATCH_LOG_GROUP="aws/dito/chat/backend/production"
+      - REPOSITORY_URI=$ACCOUNT_ID.dkr.ecr.sa-east-1.amazonaws.com/$REPOSITORY_IMAGE_NAME 
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7) 
+      - IMAGE_TAG=${COMMIT_HASH:=latest} 
+  build: 
+    commands: 
+      - echo Build started on `date` 
+      - echo Building the Docker image...           
+      - docker build -t $REPOSITORY_URI:latest . 
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG 
+  post_build: 
+    commands: 
+      - echo Build completed on `date` 
+      - echo Pushing the Docker images... 
+      - docker push $REPOSITORY_URI:latest 
+      - docker push $REPOSITORY_URI:$IMAGE_TAG 
+      - echo Building artifacts... 
+      - chmod -x taskbuild.sh 
+      - sh taskbuild.sh $TASK_DEFINITION_NAME $CONTAINER_NAME $CONTAINER_PORT 
+      - printf '[{"name":"%s","imageUri":"%s"}]' $CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json 
+artifacts: 
+    files: 
+      - appspec.json          # CodeDeploy ECS Blue/Green 
+      - task-definition.json  # CodeDeploy ECS Blue/Green
+      - imagedefinitions.json # CodeDeploy ECS
