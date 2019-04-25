@@ -26,11 +26,11 @@
         "environment": [
           { 
             "name": "REACT_APP_BACKEND_WS", 
-            "value": "production" 
+            "value": "ws://localhost:8080/" 
           },
           { 
             "name": "REACT_APP_BACKEND_URL", 
-            "value": "production" 
+            "value": "http://localhost:8080/" 
           }
         ], 
         "ulimits": null, 
