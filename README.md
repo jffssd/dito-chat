@@ -155,7 +155,12 @@ Os LoadBalancers farão o controle de tráfego e health checks nas instâncias o
 
 > **Nota**: Para balanceamento de carga onde o fluxo das requisições voltam para o mesmo host, é necessário que as TaskDefinitions estejam no modo de rede *awsvpc*. Pois o Loadbalancer trabalhará com o IP da instância em vez do relacionamento padrão. Outro ponto a se ressaltar é que certas famílias e tipos de instâncias permitem poucas ENI (Elastic Network Interface). Dificultando o deploy de soluções dividindo o mesmo host.
 
+A partir do momento que for importado um certificado SSL para o AWS Certificate Manager, ele pode ser adicionado ao loadbalancer para dar suporte ao protocolo HTTPS.
 Para contornar este problema de chamadas por IP, iremos utilizar os DNS e Descoberta de serviço.
+
+Crie a porta 443 no loadbalancer do frontend que aponte a porta 5000 no target group, pois o contêiner de produção do frontend irá expor a porta 5000.
+
+Crie a porta 8080 no loadbalancer do backend apontando para a porta 8080 do target group.
 
 ## DNS e Service Discovery
 __AWS Route53__
@@ -180,6 +185,8 @@ Para a URL do LoadBalancer do **backend**, vamos criar um novo registro CNAME na
 Após alguns minutos, toda requisição feita a estes nomes será enviada aos load balancers!
 
 Se você queria descobrir o namespace utilizado pelo seu serviço, a lista completa estará na Zona de Hospedagem **local**.
+
+**ATENÇÃO**: Na variável de ambientes referente ao CORS do projeto **backend**, configure de acordo com o registro do app **frontend**
 
 ## Armazenamento de Logs Centralizado
 __AWS CloudWatch Logs__
