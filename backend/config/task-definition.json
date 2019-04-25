@@ -25,12 +25,12 @@
         "cpu": 0, 
         "environment": [
           { 
-            "name": "REACT_APP_BACKEND_WS", 
-            "value": "production" 
+            "name": "ALLOWED_ORIGIN", 
+            "value": "http://frontend_route53_record:5000/" 
           },
           { 
-            "name": "REACT_APP_BACKEND_URL", 
-            "value": "production" 
+            "name": "REDIS_URL", 
+            "value": "elasticache_url:6379" 
           }
         ], 
         "ulimits": null, 
